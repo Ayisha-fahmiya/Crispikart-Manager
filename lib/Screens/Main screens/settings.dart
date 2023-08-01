@@ -60,30 +60,53 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-          Consumer<ThemeCubit>(
-            builder: (context, themeCubit, _) {
-              final themeState = themeCubit.state;
-              return SwitchListTile(
-                secondary: themeState
-                    ? const Icon(
-                        Icons.dark_mode,
-                        size: 26,
-                      )
-                    : const Icon(
-                        Icons.light_mode,
-                        size: 26,
-                      ),
-                title: const Text('App Theme'),
-                subtitle: themeState
-                    ? const Text('Dark Theme')
-                    : const Text('Light Theme'),
-                value: themeState,
-                onChanged: (value) {
-                  themeCubit.toggleTheme();
-                },
-              );
+          SwitchListTile(
+            secondary:
+                // themeState
+                //     ? const Icon(
+                //         Icons.dark_mode,
+                //         size: 26,
+                //       )
+                //     :
+                const Icon(
+              Icons.light_mode,
+              size: 26,
+            ),
+            title: const Text('App Theme'),
+            subtitle:
+                //  themeState
+                //     ? const Text('Dark Theme')
+                //     :
+                const Text('Light Theme'),
+            value: false,
+            onChanged: (value) {
+              // themeCubit.toggleTheme();
             },
           ),
+          // Consumer<ThemeCubit>(
+          //   builder: (context, themeCubit, _) {
+          //     final themeState = themeCubit.state;
+          //     return SwitchListTile(
+          //       secondary: themeState
+          //           ? const Icon(
+          //               Icons.dark_mode,
+          //               size: 26,
+          //             )
+          //           : const Icon(
+          //               Icons.light_mode,
+          //               size: 26,
+          //             ),
+          //       title: const Text('App Theme'),
+          //       subtitle: themeState
+          //           ? const Text('Dark Theme')
+          //           : const Text('Light Theme'),
+          //       value: themeState,
+          //       onChanged: (value) {
+          //         themeCubit.toggleTheme();
+          //       },
+          //     );
+          //   },
+          // ),
           ListTile(
             leading: const Icon(
               Icons.help,

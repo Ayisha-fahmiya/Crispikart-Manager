@@ -1,7 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:restaurant_app/controllers/categories_controller.dart';
 import 'package:restaurant_app/controllers/menu_screen_controller.dart';
+import 'package:restaurant_app/providers/category_provider.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
 
 class FoodMenuItem {
@@ -12,7 +17,15 @@ class FoodMenuItem {
   final bool availableAllTime;
   final bool availableForBreakfast;
   final bool availableForLunch;
+  final bool availableForEveningTea;
   final bool availableForDinner;
+  // final bool drinks;
+  // final bool veg;
+  // final bool nonVeg;
+  // final bool rice;
+  // final bool snacks;
+  // final bool salads;
+  // final bool desserts;
   final bool pickupOption;
   final bool deliveryOption;
   final int quantityAvailable;
@@ -27,21 +40,30 @@ class FoodMenuItem {
     required this.availableAllTime,
     required this.availableForBreakfast,
     required this.availableForLunch,
+    required this.availableForEveningTea,
     required this.availableForDinner,
+    // required this.drinks,
+    // required this.veg,
+    // required this.nonVeg,
+    // required this.rice,
+    // required this.snacks,
+    // required this.salads,
+    // required this.desserts,
     required this.pickupOption,
     required this.deliveryOption,
     required this.quantityAvailable,
   });
 }
 
-class MenuScreen extends StatefulWidget {
+class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
 
   @override
   MenuScreenState createState() => MenuScreenState();
 }
 
-class MenuScreenState extends State<MenuScreen> {
+class MenuScreenState extends ConsumerState<MenuScreen> {
+  TextEditingController categoriesController = TextEditingController();
   final ButtonStyle flatButtonStyle = TextButton.styleFrom(
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(4.0)),
@@ -66,7 +88,15 @@ class MenuScreenState extends State<MenuScreen> {
   bool availableAllTime = false;
   bool availableForBreakfast = false;
   bool availableForLunch = false;
+  bool availableForEvinigTea = false;
   bool availableForDinner = false;
+  bool drinks = false;
+  bool veg = false;
+  bool nonVeg = false;
+  bool rice = false;
+  bool snacks = false;
+  bool salads = false;
+  bool desserts = false;
   bool pickupOption = false;
   bool deliveryOption = false;
 
@@ -129,7 +159,15 @@ class MenuScreenState extends State<MenuScreen> {
     availableAllTime = item.availableAllTime;
     availableForBreakfast = item.availableForBreakfast;
     availableForLunch = item.availableForLunch;
+    availableForEvinigTea = item.availableForEveningTea;
     availableForDinner = item.availableForDinner;
+    // drinks = item.drinks;
+    // veg = item.veg;
+    // nonVeg = item.nonVeg;
+    // rice = item.rice;
+    // snacks = item.snacks;
+    // salads = item.salads;
+    // desserts = item.desserts;
     pickupOption = item.pickupOption;
     deliveryOption = item.deliveryOption;
     quantityController.text = item.quantityAvailable.toString();
@@ -241,6 +279,15 @@ class MenuScreenState extends State<MenuScreen> {
                       },
                     ),
                     CheckboxListTile(
+                      title: const Text('Evening Tea'),
+                      value: availableForEvinigTea,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          availableForEvinigTea = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
                       title: const Text('Dinner'),
                       value: availableForDinner,
                       onChanged: (bool? value) {
@@ -250,6 +297,74 @@ class MenuScreenState extends State<MenuScreen> {
                       },
                     ),
                     const SizedBox(height: 22),
+                    const Text(
+                      'Categories',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Drinks'),
+                      value: drinks,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          drinks = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Veg'),
+                      value: veg,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          veg = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Non-Veg'),
+                      value: nonVeg,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          nonVeg = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Rice'),
+                      value: rice,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          rice = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Snacks'),
+                      value: snacks,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          snacks = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Salads'),
+                      value: salads,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          salads = value!;
+                        });
+                      },
+                    ),
+                    CheckboxListTile(
+                      title: const Text('Desserts'),
+                      value: desserts,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          desserts = value!;
+                        });
+                      },
+                    ),
                     const Text(
                       'Delivery options',
                       style:
@@ -300,7 +415,15 @@ class MenuScreenState extends State<MenuScreen> {
                         availableAllTime: availableAllTime,
                         availableForBreakfast: availableForBreakfast,
                         availableForLunch: availableForLunch,
+                        availableForEveningTea: availableForEvinigTea,
                         availableForDinner: availableForDinner,
+                        // drinks: drinks,
+                        // veg: veg,
+                        // nonVeg: nonVeg,
+                        // rice: rice,
+                        // snacks: snacks,
+                        // salads: salads,
+                        // desserts: desserts,
                         pickupOption: pickupOption,
                         deliveryOption: deliveryOption,
                         quantityAvailable: quantity,
@@ -343,6 +466,13 @@ class MenuScreenState extends State<MenuScreen> {
     availableForBreakfast = false;
     availableForLunch = false;
     availableForDinner = false;
+    // drinks = false;
+    // veg = false;
+    // nonVeg = false;
+    // rice = false;
+    // snacks = false;
+    // salads = false;
+    // desserts = false;
     pickupOption = false;
     deliveryOption = false;
   }
@@ -460,27 +590,81 @@ class MenuScreenState extends State<MenuScreen> {
                                   style: TextStyle(color: Colors.grey[600]),
                                 )
                               : const SizedBox(),
-                          const SizedBox(height: 5),
                           item.availableForBreakfast
                               ? Text(
                                   '- Breakfast',
                                   style: TextStyle(color: Colors.grey[600]),
                                 )
                               : const SizedBox(),
-                          const SizedBox(height: 5),
                           item.availableForLunch
                               ? Text(
                                   '- Lunch',
                                   style: TextStyle(color: Colors.grey[600]),
                                 )
                               : const SizedBox(),
-                          const SizedBox(height: 5),
+                          item.availableForEveningTea
+                              ? Text(
+                                  '- Evening Tea',
+                                  style: TextStyle(color: Colors.grey[600]),
+                                )
+                              : const SizedBox(),
                           item.availableForDinner
                               ? Text(
                                   '- Dinner',
                                   style: TextStyle(color: Colors.grey[600]),
                                 )
                               : const SizedBox(),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Category',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16,
+                                color: Colors.grey[600]),
+                          ),
+                          const SizedBox(height: 5),
+                          // item.drinks
+                          //     ? Text(
+                          //         '- Drinks',
+                          //         style: TextStyle(color: Colors.grey[600]),
+                          //       )
+                          //     : const SizedBox(),
+                          // item.veg
+                          //     ? Text(
+                          //         '- Veg',
+                          //         style: TextStyle(color: Colors.grey[600]),
+                          //       )
+                          //     : const SizedBox(),
+                          // item.nonVeg
+                          //     ? Text(
+                          //         '- Non-Veg',
+                          //         style: TextStyle(color: Colors.grey[600]),
+                          //       )
+                          //     : const SizedBox(),
+                          // item.rice
+                          //     ? Text(
+                          //         '- Rice',
+                          //         style: TextStyle(color: Colors.grey[600]),
+                          //       )
+                          //     : const SizedBox(),
+                          // item.snacks
+                          //     ? Text(
+                          //         '- Snacks',
+                          //         style: TextStyle(color: Colors.grey[600]),
+                          //       )
+                          //     : const SizedBox(),
+                          // item.salads
+                          //     ? Text(
+                          //         '- Salads',
+                          //         style: TextStyle(color: Colors.grey[600]),
+                          //       )
+                          //     : const SizedBox(),
+                          // item.desserts
+                          //     ? Text(
+                          //         '- Desserts',
+                          //         style: TextStyle(color: Colors.grey[600]),
+                          //       )
+                          //     : const SizedBox(),
                           const SizedBox(height: 16),
                           Text(
                             'Delivery options',
@@ -656,6 +840,15 @@ class MenuScreenState extends State<MenuScreen> {
                   },
                 ),
                 CheckboxListTile(
+                  title: const Text('Evening Tea'),
+                  value: availableForEvinigTea,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      availableForEvinigTea = value!;
+                    });
+                  },
+                ),
+                CheckboxListTile(
                   title: const Text('Dinner'),
                   value: availableForDinner,
                   onChanged: (bool? value) {
@@ -663,6 +856,110 @@ class MenuScreenState extends State<MenuScreen> {
                       availableForDinner = value!;
                     });
                   },
+                ),
+                const Text(
+                  'Categories',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+                ),
+                const SizedBox(height: 22),
+                TypeAheadField<String>(
+                  textFieldConfiguration: TextFieldConfiguration(
+                    controller: ref.watch(categoryTextEditingController),
+                    decoration: const InputDecoration(
+                      labelText: 'Categories',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  suggestionsCallback: (pattern) async {
+                    return Categories()
+                        .categories
+                        .where((tag) =>
+                            tag.toLowerCase().contains(pattern.toLowerCase()))
+                        .toList();
+                  },
+                  itemBuilder: (context, suggestion) {
+                    return ListTile(
+                      title: Text(suggestion),
+                      onTap: () {
+                        ref.watch(categoryTextEditingController).text =
+                            suggestion;
+                        ScaffoldMessenger(
+                          child: Categories().generateTags(),
+                        );
+                      },
+                    );
+                  },
+                  onSuggestionSelected: (suggestion) {
+                    Categories().selectedCategory.add(suggestion);
+                  },
+                ),
+                // SizedBox(
+                //   height: 60,
+                //   child: ListView.builder(
+                //     itemCount: Categories().selectedCategory.length,
+                //     itemBuilder: (context, index) {
+                //       final tag = Categories().selectedCategory[index];
+                //       return ListTile(
+                //         title: Text(tag),
+                //         trailing: IconButton(
+                //           icon: Icon(Icons.delete),
+                //           onPressed: () {
+                //             setState(() {
+                //               // Remove the tag from the Categories().selectedCategory list when the user clicks the delete icon.
+                //               Categories().selectedCategory.removeAt(index);
+                //             });
+                //           },
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
+                SizedBox(
+                  height: 100,
+                  child: Tags(
+                    itemCount: Categories().selectedCategory.length,
+                    itemBuilder: (index) => ListTile(
+                      title: Text(
+                        Categories().selectedCategory[index],
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      trailing: IconButton(
+                        icon: const Icon(
+                          Icons.delete,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            Categories().selectedCategory.removeAt(index);
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    title: const Text("Add Category"),
+                    children: [
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Category Name',
+                          contentPadding: const EdgeInsets.all(16),
+                          border: OutlineInputBorder(
+                              borderSide: const BorderSide(width: 1),
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text("Add"),
+                      ),
+                    ],
+                    onExpansionChanged: (value) {},
+                  ),
                 ),
                 const SizedBox(height: 22),
                 const Text(
@@ -706,21 +1003,28 @@ class MenuScreenState extends State<MenuScreen> {
                   final price = double.parse(priceController.text);
                   final quantity = int.parse(quantityController.text);
 
-                  final newItem = FoodMenuItem(
-                    imageUrl: _image != null ? _image!.path : null,
-                    name: nameController.text,
-                    description: descriptionController.text,
-                    price: price,
-                    availableAllTime: availableAllTime,
-                    availableForBreakfast: availableForBreakfast,
-                    availableForLunch: availableForLunch,
-                    availableForDinner: availableForDinner,
-                    pickupOption: pickupOption,
-                    deliveryOption: deliveryOption,
-                    quantityAvailable: quantity,
-                  );
-
                   setState(() {
+                    final newItem = FoodMenuItem(
+                      imageUrl: _image != null ? _image!.path : null,
+                      name: nameController.text,
+                      description: descriptionController.text,
+                      price: price,
+                      availableAllTime: availableAllTime,
+                      availableForBreakfast: availableForBreakfast,
+                      availableForLunch: availableForLunch,
+                      availableForEveningTea: availableForEvinigTea,
+                      availableForDinner: availableForDinner,
+                      // drinks: drinks,
+                      // veg: veg,
+                      // nonVeg: nonVeg,
+                      // rice: rice,
+                      // snacks: snacks,
+                      // salads: salads,
+                      // desserts: desserts,
+                      pickupOption: pickupOption,
+                      deliveryOption: deliveryOption,
+                      quantityAvailable: quantity,
+                    );
                     _menuScreenController.menuItems.add(newItem);
                   });
 

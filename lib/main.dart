@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_app/Screens/Main%20screens/main_screen.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
 
 void main() {
-  runApp(const RestaurantManagerApp());
+  runApp(
+    const ProviderScope(
+      child: RestaurantManagerApp(),
+    ),
+  );
 }
 
 class ThemeCubit extends ChangeNotifier {
@@ -23,26 +27,35 @@ class RestaurantManagerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ThemeCubit>(
-      create: (context) => ThemeCubit(),
-      child: Consumer<ThemeCubit>(
-        builder: (context, themeCubit, _) {
-          final themeMode = themeCubit.state ? ThemeMode.dark : ThemeMode.light;
-
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Restaurant App',
-            theme: appTheme,
-            darkTheme: ThemeData.dark().copyWith(
-              textTheme: ThemeData.dark().textTheme.apply(
-                    fontFamily: 'Poppins',
-                  ),
-            ),
-            themeMode: themeMode,
-            home: const MainScreen(),
-          );
-        },
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Restaurant App',
+      theme: appTheme,
+      // darkTheme: ThemeData.dark().copyWith(
+      //   textTheme: ThemeData.dark().textTheme.apply(
+      //         fontFamily: 'Poppins',
+      //       ),
+      // ),
+      // themeMode: themeMode,
+      home: const MainScreen(),
     );
+    // child: Consumer<ThemeCubit>(
+    //   builder: (context, themeCubit, _) {
+    //     final themeMode = themeCubit.state ? ThemeMode.dark : ThemeMode.light;
+
+    //     return MaterialApp(
+    //       debugShowCheckedModeBanner: false,
+    //       title: 'Restaurant App',
+    //       theme: appTheme,
+    //       darkTheme: ThemeData.dark().copyWith(
+    //         textTheme: ThemeData.dark().textTheme.apply(
+    //               fontFamily: 'Poppins',
+    //             ),
+    //       ),
+    //       themeMode: themeMode,
+    //       home: const MainScreen(),
+    //     );
+    //   },
+    // ),
   }
 }

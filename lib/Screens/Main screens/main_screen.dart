@@ -35,24 +35,25 @@ class _MainScreenState extends State<MainScreen> {
             icon: const Icon(Icons.menu),
           ),
           title: Center(
-            child: Image.asset(
-              'assets/logos/Logo_color-01.png',
-              height: 36,
-              color:
-                  Provider.of<ThemeCubit>(context).brightness == Brightness.dark
-                      ? appTheme.colorScheme.onPrimary
-                      : null,
-            ),
+            child: Image.asset('assets/logos/Logo_color-01.png',
+                height: 36,
+                color:
+                    // Provider.of<ThemeCubit>(context).brightness == Brightness.dark
+                    // ?
+                    appTheme.colorScheme.onPrimary
+                // : null,
+                ),
           ),
           actions: [
             IconButton(
               onPressed: () {
-                Provider.of<ThemeCubit>(context, listen: false).toggleTheme();
+                // Provider.of<ThemeCubit>(context, listen: false).toggleTheme();
               },
               icon: Icon(
-                Provider.of<ThemeCubit>(context).brightness == Brightness.dark
-                    ? Icons.light_mode_rounded
-                    : Icons.dark_mode_rounded,
+                // Provider.of<ThemeCubit>(context).brightness == Brightness.dark
+                //     ? Icons.light_mode_rounded
+                //     :
+                Icons.dark_mode_rounded,
                 size: 30,
               ),
             ),
