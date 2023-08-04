@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:restaurant_app/controllers/categories_controller.dart';
 import 'package:restaurant_app/controllers/menu_screen_controller.dart';
 import 'package:restaurant_app/providers/category_provider.dart';
+import 'package:restaurant_app/responsive/responsive.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
 
 class FoodMenuItem {
@@ -895,21 +896,29 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                   },
                 ),
                 // SizedBox(
-                //   height: 60,
+                //   width: R.sw(375, context),
+                //   height: Categories().selectedCategory.isEmpty
+                //       ? 0
+                //       : Categories().selectedCategory.length * 20,
                 //   child: ListView.builder(
+                //     shrinkWrap: true,
+                //     physics: const NeverScrollableScrollPhysics(),
                 //     itemCount: Categories().selectedCategory.length,
                 //     itemBuilder: (context, index) {
                 //       final tag = Categories().selectedCategory[index];
-                //       return ListTile(
-                //         title: Text(tag),
-                //         trailing: IconButton(
-                //           icon: Icon(Icons.delete),
-                //           onPressed: () {
-                //             setState(() {
-                //               // Remove the tag from the Categories().selectedCategory list when the user clicks the delete icon.
-                //               Categories().selectedCategory.removeAt(index);
-                //             });
-                //           },
+                //       return SizedBox(
+                //         height: 20,
+                //         child: ListTile(
+                //           tileColor: Colors.red,
+                //           title: Text(tag),
+                //           trailing: IconButton(
+                //             icon: const Icon(Icons.delete),
+                //             onPressed: () {
+                //               setState(() {
+                //                 Categories().selectedCategory.removeAt(index);
+                //               });
+                //             },
+                //           ),
                 //         ),
                 //       );
                 //     },
@@ -917,6 +926,7 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                 // ),
                 SizedBox(
                   height: 100,
+                  width: R.sw(375, context),
                   child: Tags(
                     itemCount: Categories().selectedCategory.length,
                     itemBuilder: (index) => ListTile(

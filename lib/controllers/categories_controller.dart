@@ -27,25 +27,11 @@ class Categories {
                   title: selectedCategory[index],
                   color: Colors.blue,
                   activeColor: Colors.red,
-                  onPressed: (Item item) {
-                    ScaffoldMessenger(
-                      child: Row(
-                        children: [
-                          Text(
-                            selectedCategory[index],
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.close),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                  onPressed: (Item item) {},
                   highlightColor: Colors.transparent,
                   splashColor: Colors.transparent,
                   elevation: 0.0,
-                  borderRadius: BorderRadius.all(Radius.circular(7.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(7.0)),
                   textColor: Colors.white,
                   textActiveColor: Colors.white,
                   removeButton: ItemTagsRemoveButton(
