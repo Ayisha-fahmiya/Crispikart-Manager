@@ -895,35 +895,35 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                     Categories().selectedCategory.add(suggestion);
                   },
                 ),
-                // SizedBox(
-                //   width: R.sw(375, context),
-                //   height: Categories().selectedCategory.isEmpty
-                //       ? 0
-                //       : Categories().selectedCategory.length * 20,
-                //   child: ListView.builder(
-                //     shrinkWrap: true,
-                //     physics: const NeverScrollableScrollPhysics(),
-                //     itemCount: Categories().selectedCategory.length,
-                //     itemBuilder: (context, index) {
-                //       final tag = Categories().selectedCategory[index];
-                //       return SizedBox(
-                //         height: 20,
-                //         child: ListTile(
-                //           tileColor: Colors.red,
-                //           title: Text(tag),
-                //           trailing: IconButton(
-                //             icon: const Icon(Icons.delete),
-                //             onPressed: () {
-                //               setState(() {
-                //                 Categories().selectedCategory.removeAt(index);
-                //               });
-                //             },
-                //           ),
-                //         ),
-                //       );
-                //     },
-                //   ),
-                // ),
+                SizedBox(
+                  width: R.sw(375, context),
+                  height: Categories().selectedCategory.isEmpty
+                      ? 0
+                      : Categories().selectedCategory.length * 20,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: Categories().selectedCategory.length,
+                    itemBuilder: (context, index) {
+                      final tag = Categories().selectedCategory[index];
+                      return SizedBox(
+                        height: 20,
+                        child: ListTile(
+                          tileColor: Colors.red,
+                          title: Text(tag),
+                          trailing: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              setState(() {
+                                Categories().selectedCategory.removeAt(index);
+                              });
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 SizedBox(
                   height: 100,
                   width: R.sw(375, context),
