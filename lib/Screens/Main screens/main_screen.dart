@@ -4,8 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_app/Screens/Main%20screens/home_screen.dart';
 import 'package:restaurant_app/Screens/Main%20screens/settings.dart';
 import 'package:restaurant_app/Screens/Sub-screens/menu_screen.dart';
+import 'package:restaurant_app/Screens/Sub-screens/menu_screen2.dart';
 import 'package:restaurant_app/providers/app_theme_provider.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
+
+import '../../utilities/theme_bloc.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -27,7 +30,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = ref.watch(selectedTheme);
+    var theme = ref.watch(selectedTheme);
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -36,25 +39,27 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           icon: const Icon(Icons.menu),
         ),
         title: Center(
-          child: Image.asset('assets/logos/Logo_color-01.png',
-              height: 36,
-              color:
-                  // Provider.of<ThemeCubit>(context).brightness == Brightness.dark
-                  // ?
-                  appTheme.colorScheme.onPrimary
-              // : null,
-              ),
+          child: Image.asset(
+            'assets/logos/Logo_color-01.png',
+            height: 36,
+            color:
+                // Provider.of<ThemeCubit>(context).brightness == Brightness.dark
+                // ?
+                theme ? appTheme.colorScheme.onPrimary : null,
+          ),
         ),
         actions: [
           IconButton(
             onPressed: () {
+              theme = !theme;
+              print(theme);
               // Provider.of<ThemeCubit>(context, listen: false).toggleTheme();
             },
             icon: Icon(
-              // Provider.of<ThemeCubit>(context).brightness == Brightness.dark
-              //     ? Icons.light_mode_rounded
-              //     :
-              Icons.dark_mode_rounded,
+              // Provider.ons.light_mode_rounded
+              //     :f<ThemeCubit>(context).brightness == Brightness.dark
+              //     ? Ico
+              theme ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
               size: 30,
             ),
           ),
@@ -70,7 +75,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         children: const [
           HomeScreen(),
           Center(child: Text('Chat')),
-          MenuScreen(),
+          // MenuScreen(),
+          MenuScreen2(),
           SettingsScreen(),
         ],
       ),

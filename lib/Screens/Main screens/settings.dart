@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restaurant_app/Screens/Sub-screens/profile_settings_screen.dart';
 import 'package:restaurant_app/utilities/theme_bloc.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -23,7 +24,14 @@ class SettingsScreen extends StatelessWidget {
               size: 26,
             ),
             title: const Text('Profile Settings'),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileSettings(),
+                ),
+              );
+            },
           ),
           ListTile(
             leading: const Icon(

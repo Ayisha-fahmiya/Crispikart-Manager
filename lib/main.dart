@@ -38,6 +38,7 @@ class RestaurantManagerApp extends ConsumerWidget {
       //         fontFamily: 'Poppins',
       //       ),
       // ),
+      darkTheme: darkTheme,
       // themeMode: themeMode,
       home: const MainScreen(),
     );

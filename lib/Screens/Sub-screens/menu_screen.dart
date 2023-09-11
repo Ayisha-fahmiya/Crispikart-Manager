@@ -6,55 +6,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:restaurant_app/controllers/categories_controller.dart';
 import 'package:restaurant_app/controllers/menu_screen_controller.dart';
+import 'package:restaurant_app/models/food_menu_model.dart';
 import 'package:restaurant_app/providers/category_provider.dart';
 import 'package:restaurant_app/responsive/responsive.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
-
-class FoodMenuItem {
-  final String? imageUrl;
-  final String name;
-  final String description;
-  final double price;
-  final bool availableAllTime;
-  final bool availableForBreakfast;
-  final bool availableForLunch;
-  final bool availableForEveningTea;
-  final bool availableForDinner;
-  // final bool drinks;
-  // final bool veg;
-  // final bool nonVeg;
-  // final bool rice;
-  // final bool snacks;
-  // final bool salads;
-  // final bool desserts;
-  final bool pickupOption;
-  final bool deliveryOption;
-  final int quantityAvailable;
-
-  bool isDetailsVisible = false;
-
-  FoodMenuItem({
-    this.imageUrl,
-    required this.name,
-    required this.description,
-    required this.price,
-    required this.availableAllTime,
-    required this.availableForBreakfast,
-    required this.availableForLunch,
-    required this.availableForEveningTea,
-    required this.availableForDinner,
-    // required this.drinks,
-    // required this.veg,
-    // required this.nonVeg,
-    // required this.rice,
-    // required this.snacks,
-    // required this.salads,
-    // required this.desserts,
-    required this.pickupOption,
-    required this.deliveryOption,
-    required this.quantityAvailable,
-  });
-}
 
 class MenuScreen extends ConsumerStatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -303,69 +258,69 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                       style:
                           TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
                     ),
-                    CheckboxListTile(
-                      title: const Text('Drinks'),
-                      value: drinks,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          drinks = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text('Veg'),
-                      value: veg,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          veg = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text('Non-Veg'),
-                      value: nonVeg,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          nonVeg = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text('Rice'),
-                      value: rice,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          rice = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text('Snacks'),
-                      value: snacks,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          snacks = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text('Salads'),
-                      value: salads,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          salads = value!;
-                        });
-                      },
-                    ),
-                    CheckboxListTile(
-                      title: const Text('Desserts'),
-                      value: desserts,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          desserts = value!;
-                        });
-                      },
-                    ),
+                    // CheckboxListTile(
+                    //   title: const Text('Drinks'),
+                    //   value: drinks,
+                    //   onChanged: (bool? value) {
+                    //     setState(() {
+                    //       drinks = value!;
+                    //     });
+                    //   },
+                    // ),
+                    // CheckboxListTile(
+                    //   title: const Text('Veg'),
+                    //   value: veg,
+                    //   onChanged: (bool? value) {
+                    //     setState(() {
+                    //       veg = value!;
+                    //     });
+                    //   },
+                    // ),
+                    // CheckboxListTile(
+                    //   title: const Text('Non-Veg'),
+                    //   value: nonVeg,
+                    //   onChanged: (bool? value) {
+                    //     setState(() {
+                    //       nonVeg = value!;
+                    //     });
+                    //   },
+                    // ),
+                    // CheckboxListTile(
+                    //   title: const Text('Rice'),
+                    //   value: rice,
+                    //   onChanged: (bool? value) {
+                    //     setState(() {
+                    //       rice = value!;
+                    //     });
+                    //   },
+                    // ),
+                    // CheckboxListTile(
+                    //   title: const Text('Snacks'),
+                    //   value: snacks,
+                    //   onChanged: (bool? value) {
+                    //     setState(() {
+                    //       snacks = value!;
+                    //     });
+                    //   },
+                    // ),
+                    // CheckboxListTile(
+                    //   title: const Text('Salads'),
+                    //   value: salads,
+                    //   onChanged: (bool? value) {
+                    //     setState(() {
+                    //       salads = value!;
+                    //     });
+                    //   },
+                    // ),
+                    // CheckboxListTile(
+                    //   title: const Text('Desserts'),
+                    //   value: desserts,
+                    //   onChanged: (bool? value) {
+                    //     setState(() {
+                    //       desserts = value!;
+                    //     });
+                    //   },
+                    // ),
                     const Text(
                       'Delivery options',
                       style:
@@ -405,19 +360,20 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                   child: const Text('Update'),
                   onPressed: () {
                     try {
-                      final price = double.parse(priceController.text);
-                      final quantity = int.parse(quantityController.text);
+                      // final price = double.parse(priceController.text);
+                      // final quantity = int.parse(quantityController.text);
 
                       final updatedItem = FoodMenuItem(
                         imageUrl: _image != null ? _image!.path : item.imageUrl,
                         name: nameController.text,
                         description: descriptionController.text,
-                        price: price,
+                        price: priceController.text,
                         availableAllTime: availableAllTime,
                         availableForBreakfast: availableForBreakfast,
                         availableForLunch: availableForLunch,
                         availableForEveningTea: availableForEvinigTea,
                         availableForDinner: availableForDinner,
+                        categories: ref.watch(categoriesProvider),
                         // drinks: drinks,
                         // veg: veg,
                         // nonVeg: nonVeg,
@@ -427,7 +383,7 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                         // desserts: desserts,
                         pickupOption: pickupOption,
                         deliveryOption: deliveryOption,
-                        quantityAvailable: quantity,
+                        quantityAvailable: quantityController.text,
                       );
 
                       setState(() {
@@ -867,9 +823,18 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                 TypeAheadField<String>(
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: ref.watch(categoryTextEditingController),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       labelText: 'Categories',
                       border: OutlineInputBorder(),
+                      suffix: ElevatedButton(
+                        onPressed: () {
+                          setState(() {});
+                          Categories().selectedCategory.add(
+                              ref.watch(categoryTextEditingController).text);
+                          print(Categories().selectedCategory);
+                        },
+                        child: Text("Add"),
+                      ),
                     ),
                   ),
                   suggestionsCallback: (pattern) async {
@@ -885,9 +850,6 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                       onTap: () {
                         ref.watch(categoryTextEditingController).text =
                             suggestion;
-                        ScaffoldMessenger(
-                          child: Categories().generateTags(),
-                        );
                       },
                     );
                   },
@@ -895,57 +857,79 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                     Categories().selectedCategory.add(suggestion);
                   },
                 ),
+
+                // SizedBox(
+                //   width: R.sw(375, context),
+                //   height: Categories().selectedCategory.isEmpty
+                //       ? 0
+                //       : Categories().selectedCategory.length * 20,
+                //   child: ListView.builder(
+                //     shrinkWrap: true,
+                //     physics: const NeverScrollableScrollPhysics(),
+                //     itemCount: Categories().selectedCategory.length,
+                //     itemBuilder: (context, index) {
+                //       final tag = Categories().selectedCategory[index];
+                //       return SizedBox(
+                //         height: 20,
+                //         child: ListTile(
+                //           tileColor: Colors.red,
+                //           title: Text(tag),
+                //           trailing: IconButton(
+                //             icon: const Icon(Icons.delete),
+                //             onPressed: () {
+                //               setState(() {
+                //                 Categories().selectedCategory.removeAt(index);
+                //               });
+                //             },
+                //           ),
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
+
                 SizedBox(
-                  width: R.sw(375, context),
-                  height: Categories().selectedCategory.isEmpty
-                      ? 0
-                      : Categories().selectedCategory.length * 20,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: Categories().selectedCategory.length,
-                    itemBuilder: (context, index) {
-                      final tag = Categories().selectedCategory[index];
-                      return SizedBox(
-                        height: 20,
-                        child: ListTile(
-                          tileColor: Colors.red,
-                          title: Text(tag),
-                          trailing: IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              setState(() {
-                                Categories().selectedCategory.removeAt(index);
-                              });
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 100,
+                  // height: 100,
                   width: R.sw(375, context),
                   child: Tags(
                     itemCount: Categories().selectedCategory.length,
-                    itemBuilder: (index) => ListTile(
-                      title: Text(
-                        Categories().selectedCategory[index],
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.black,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            Categories().selectedCategory.removeAt(index);
-                          });
-                        },
-                      ),
-                    ),
+                    itemBuilder: (index) =>
+                        Categories().selectedCategory.isEmpty
+                            ? SizedBox()
+                            : SizedBox(
+                                child: Row(
+                                  children: [
+                                    Text(Categories().selectedCategory[index]),
+                                    IconButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          Categories()
+                                              .selectedCategory
+                                              .removeAt(index);
+                                        });
+                                      },
+                                      icon: Icon(Icons.close),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                    // ListTile(
+                    //   title: Text(
+                    //     Categories().selectedCategory[index],
+                    //     style: TextStyle(color: Colors.black),
+                    //   ),
+                    //   trailing: IconButton(
+                    //     icon: const Icon(
+                    //       Icons.delete,
+                    //       color: Colors.black,
+                    //     ),
+                    //     onPressed: () {
+                    //       setState(() {
+                    //         Categories().selectedCategory.removeAt(index);
+                    //       });
+                    //     },
+                    //   ),
+                    // ),
                   ),
                 ),
                 Theme(
@@ -1018,12 +1002,13 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                       imageUrl: _image != null ? _image!.path : null,
                       name: nameController.text,
                       description: descriptionController.text,
-                      price: price,
+                      price: priceController.text,
                       availableAllTime: availableAllTime,
                       availableForBreakfast: availableForBreakfast,
                       availableForLunch: availableForLunch,
                       availableForEveningTea: availableForEvinigTea,
                       availableForDinner: availableForDinner,
+                      categories: ref.watch(categoriesProvider),
                       // drinks: drinks,
                       // veg: veg,
                       // nonVeg: nonVeg,
@@ -1033,7 +1018,7 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                       // desserts: desserts,
                       pickupOption: pickupOption,
                       deliveryOption: deliveryOption,
-                      quantityAvailable: quantity,
+                      quantityAvailable: quantityController.text,
                     );
                     _menuScreenController.menuItems.add(newItem);
                   });
