@@ -1,5 +1,7 @@
+import 'dart:io';
+
 class FoodMenuItem {
-  final String? imageUrl;
+  final File? imageUrl;
   final String name;
   final String description;
   final String price;

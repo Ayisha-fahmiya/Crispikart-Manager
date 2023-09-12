@@ -8,7 +8,7 @@ void clearFormFields(BuildContext context, WidgetRef ref) {
   ref.watch(descriptionControllerProvider).clear();
   ref.watch(priceControllerProvider).clear();
   ref.watch(quantityControllerProvider).clear();
-  selectedImage = null;
+  // selectedImage = null;
   availablAllTime = false;
   breakfst = false;
   lnch = false;

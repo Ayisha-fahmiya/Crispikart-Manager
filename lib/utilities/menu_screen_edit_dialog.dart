@@ -56,12 +56,12 @@ class OpenEditDialog {
                   },
                   child: const Text("Update Image"),
                 ),
-                if (selectedImage != null)
-                  SizedBox(
-                    width: 100,
-                    height: 100,
-                    child: Image.file(selectedImage!),
-                  ),
+                // if (selectedImage != null)
+                //   SizedBox(
+                //     width: 100,
+                //     height: 100,
+                //     child: Image.file(selectedImage!),
+                //   ),
                 TextField(
                   decoration: const InputDecoration(labelText: "Name"),
                   controller: nameController,
@@ -217,7 +217,7 @@ class OpenEditDialog {
               onPressed: () {
                 try {
                   final updatedItem = FoodMenuItem(
-                    imageUrl: image != null ? image!.path : null,
+                    imageUrl: image != null ? image! : null,
                     name: nameController.text,
                     description: descriptionController.text,
                     price: priceController.text,

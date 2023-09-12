@@ -24,7 +24,6 @@ selectImages(
                   onTap: () async {
                     final _image = await ImagePicker()
                         .pickImage(source: ImageSource.gallery);
-                    // image = ref.watch(imageProvider);
 
                     setState(() {
                       image = _image != null ? File(_image.path) : null;

@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:restaurant_app/Screens/Sub-screens/menu_screen.dart';
 import 'package:restaurant_app/Screens/Sub-screens/menu_screen2.dart';
 import 'package:restaurant_app/models/food_menu_model.dart';
 import 'package:restaurant_app/providers/availability_provider.dart';
@@ -13,13 +13,11 @@ import 'package:restaurant_app/providers/delivery_options_provider.dart';
 import 'package:restaurant_app/providers/form_field_controller_provider.dart';
 import 'package:restaurant_app/responsive/responsive.dart';
 import 'package:restaurant_app/utilities/clear_form.dart';
-import 'package:restaurant_app/utilities/pick_image.dart';
 import '../controllers/categories_controller.dart';
 import '../providers/category_provider.dart';
 import '../providers/image_picker_provider.dart';
 
 int? selectedMenuItemIndex;
-File? selectedImage;
 bool? availablAllTime;
 bool? breakfst;
 bool? lnch;
@@ -31,8 +29,6 @@ TextEditingController? categoryController;
 bool? pickUp;
 bool? homeDelivery;
 
-File? image;
-
 class OpenAddDialoq {
   StatefulBuilder openAddDialoq(BuildContext context, WidgetRef ref) {
     final nameController = ref.watch(nameControllerProvider);
@@ -40,8 +36,9 @@ class OpenAddDialoq {
     final priceController = ref.watch(priceControllerProvider);
     final quantityController = ref.watch(quantityControllerProvider);
 
+    var selectedImage = ref.watch(imageProvider);
+
     selectedMenuItemIndex = null;
-    selectedImage = ref.watch(imageProvider);
     availablAllTime = ref.watch(everyTime);
     breakfst = ref.watch(breakfast);
     lnch = ref.watch(lunch);
@@ -61,21 +58,77 @@ class OpenAddDialoq {
         content: SingleChildScrollView(
           child: Column(
             children: [
-              Row(
-                children: [
-                  if (image != null)
-                    SizedBox(
-                      height: R.sh(100, context),
-                      width: R.sw(100, context),
-                      child: Image.file(image!),
-                    ),
-                  ElevatedButton(
-                    onPressed: () {
-                      selectImages(context, ref, image);
+              if (selectedImage != null)
+                SizedBox(
+                  height: R.sh(200, context),
+                  width: R.sw(200, context),
+                  child: Image.file(selectedImage!),
+                ),
+              ElevatedButton(
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Select Image'),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              GestureDetector(
+                                child: const Text('Gallery'),
+                                onTap: () async {
+                                  final _image = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+                                  // setState(() {
+                                  //   selectedImage = _image != null
+                                  //       ? File(_image.path)
+                                  //       : null;
+                                  // });
+
+                                  if (_image != null) {
+                                    final croppedFile =
+                                        await ImageCropper().cropImage(
+                                      sourcePath: _image.path,
+                                      aspectRatio: const CropAspectRatio(
+                                          ratioX: 1.0, ratioY: 1.0),
+                                      compressQuality: 100,
+                                      maxWidth: 800,
+                                      maxHeight: 800,
+                                    );
+
+                                    if (croppedFile != null) {
+                                      setState(() {
+                                        selectedImage = croppedFile.path;
+                                      });
+                                    }
+                                  }
+
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              const SizedBox(height: 16),
+                              GestureDetector(
+                                child: const Text('Camera'),
+                                onTap: () async {
+                                  final _image = await ImagePicker()
+                                      .pickImage(source: ImageSource.camera);
+
+                                  setState(() {
+                                    selectedImage = _image != null
+                                        ? File(_image.path)
+                                        : null;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
-                    child: const Text("Upload Image"),
-                  ),
-                ],
+                  );
+                },
+                child: const Text("Upload Image"),
               ),
               TextFormField(
                 decoration: const InputDecoration(
@@ -162,20 +215,12 @@ class OpenAddDialoq {
                           ref
                               .read(categoriesProvider.notifier)
                               .addCategory(categoryController!.text);
+                          // ref.invalidate(categoriesProvider);
+
                           categoryController!.clear();
                           print(
                               "Length of categoriesProvider: ${ref.read(categoriesProvider).length}");
                         });
-
-                        // setState(() {
-                        //   Categories()
-                        //       .selectedCategory
-                        //       .add(categoryController!.text);
-
-                        //   categoryController!.clear();
-
-                        //   print(Categories().selectedCategory.length);
-                        // });
                       },
                       child: const Text("Add"),
                     ),
@@ -255,7 +300,7 @@ class OpenAddDialoq {
               try {
                 setState(() {
                   final newItem = FoodMenuItem(
-                    imageUrl: image != null ? image!.path : null,
+                    imageUrl: selectedImage,
                     name: nameController.text,
                     description: descriptionController.text,
                     price: priceController.text,

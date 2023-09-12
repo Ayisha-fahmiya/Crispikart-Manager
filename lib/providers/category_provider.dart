@@ -10,7 +10,7 @@ class CategoriesNotifier extends StateNotifier<List<String>> {
 
   // Add a category to the list
   addCategory(String category) {
-    state = [...state, category];
+    return state = [...state, category];
   }
 }
 

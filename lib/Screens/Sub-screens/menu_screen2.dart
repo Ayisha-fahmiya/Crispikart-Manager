@@ -10,6 +10,7 @@ import 'package:restaurant_app/providers/form_field_controller_provider.dart';
 import 'package:restaurant_app/responsive/responsive.dart';
 import 'package:restaurant_app/utilities/menu_screen_edit_dialog.dart';
 import 'package:restaurant_app/utilities/menu_screen_open_add_dialog.dart';
+import 'package:restaurant_app/utilities/pick_image.dart';
 
 final MenuScreenController menuScreenController = MenuScreenController();
 
@@ -73,14 +74,18 @@ class _MenuScreen2State extends ConsumerState<MenuScreen2> {
           final item = menuScreenController.menuItems[index];
           return Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(width: 2, color: Colors.grey[300]!)),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                width: 2,
+                color: Colors.grey[300]!,
+              ),
+            ),
             child: ExpansionTile(
               leading: CircleAvatar(
                 child: item.imageUrl != null
                     ? ClipOval(
                         child: Image.file(
-                          File(item.imageUrl!),
+                          File(item.imageUrl!.path),
                           fit: BoxFit.cover,
                           width: 54,
                           height: 54,

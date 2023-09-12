@@ -52,6 +52,7 @@ dependencies:
   flutter_riverpod: ^2.3.6
   flutter_tags: ^1.0.0-nullsafety.1
   flutter_typeahead: ^3.1.0
+  image_cropper: ^4.0.1
 
 dev_dependencies:
   flutter_test:

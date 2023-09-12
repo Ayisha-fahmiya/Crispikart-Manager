@@ -359,43 +359,43 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                 TextButton(
                   child: const Text('Update'),
                   onPressed: () {
-                    try {
-                      // final price = double.parse(priceController.text);
-                      // final quantity = int.parse(quantityController.text);
+                    // try {
+                    //   // final price = double.parse(priceController.text);
+                    //   // final quantity = int.parse(quantityController.text);
 
-                      final updatedItem = FoodMenuItem(
-                        imageUrl: _image != null ? _image!.path : item.imageUrl,
-                        name: nameController.text,
-                        description: descriptionController.text,
-                        price: priceController.text,
-                        availableAllTime: availableAllTime,
-                        availableForBreakfast: availableForBreakfast,
-                        availableForLunch: availableForLunch,
-                        availableForEveningTea: availableForEvinigTea,
-                        availableForDinner: availableForDinner,
-                        categories: ref.watch(categoriesProvider),
-                        // drinks: drinks,
-                        // veg: veg,
-                        // nonVeg: nonVeg,
-                        // rice: rice,
-                        // snacks: snacks,
-                        // salads: salads,
-                        // desserts: desserts,
-                        pickupOption: pickupOption,
-                        deliveryOption: deliveryOption,
-                        quantityAvailable: quantityController.text,
-                      );
+                    //   final updatedItem = FoodMenuItem(
+                    //     imageUrl: _image != null ? _image!.path : item.imageUrl,
+                    //     name: nameController.text,
+                    //     description: descriptionController.text,
+                    //     price: priceController.text,
+                    //     availableAllTime: availableAllTime,
+                    //     availableForBreakfast: availableForBreakfast,
+                    //     availableForLunch: availableForLunch,
+                    //     availableForEveningTea: availableForEvinigTea,
+                    //     availableForDinner: availableForDinner,
+                    //     categories: ref.watch(categoriesProvider),
+                    //     // drinks: drinks,
+                    //     // veg: veg,
+                    //     // nonVeg: nonVeg,
+                    //     // rice: rice,
+                    //     // snacks: snacks,
+                    //     // salads: salads,
+                    //     // desserts: desserts,
+                    //     pickupOption: pickupOption,
+                    //     deliveryOption: deliveryOption,
+                    //     quantityAvailable: quantityController.text,
+                    //   );
 
-                      setState(() {
-                        _menuScreenController
-                            .menuItems[selectedMenuItemIndex!] = updatedItem;
-                      });
+                    //   setState(() {
+                    //     _menuScreenController
+                    //         .menuItems[selectedMenuItemIndex!] = updatedItem;
+                    //   });
 
-                      _clearFormFields();
-                      Navigator.of(context).pop();
-                    } catch (e) {
-                      print(e.toString());
-                    }
+                    //   _clearFormFields();
+                    //   Navigator.of(context).pop();
+                    // } catch (e) {
+                    //   print(e.toString());
+                    // }
                   },
                 ),
               ],
@@ -462,7 +462,7 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
                   child: item.imageUrl != null
                       ? ClipOval(
                           child: Image.file(
-                            File(item.imageUrl!),
+                            File(item.imageUrl!.path),
                             fit: BoxFit.cover,
                             width: 54,
                             height: 54,
@@ -993,41 +993,41 @@ class MenuScreenState extends ConsumerState<MenuScreen> {
             TextButton(
               child: const Text('Add'),
               onPressed: () {
-                try {
-                  final price = double.parse(priceController.text);
-                  final quantity = int.parse(quantityController.text);
+                // try {
+                //   final price = double.parse(priceController.text);
+                //   final quantity = int.parse(quantityController.text);
 
-                  setState(() {
-                    final newItem = FoodMenuItem(
-                      imageUrl: _image != null ? _image!.path : null,
-                      name: nameController.text,
-                      description: descriptionController.text,
-                      price: priceController.text,
-                      availableAllTime: availableAllTime,
-                      availableForBreakfast: availableForBreakfast,
-                      availableForLunch: availableForLunch,
-                      availableForEveningTea: availableForEvinigTea,
-                      availableForDinner: availableForDinner,
-                      categories: ref.watch(categoriesProvider),
-                      // drinks: drinks,
-                      // veg: veg,
-                      // nonVeg: nonVeg,
-                      // rice: rice,
-                      // snacks: snacks,
-                      // salads: salads,
-                      // desserts: desserts,
-                      pickupOption: pickupOption,
-                      deliveryOption: deliveryOption,
-                      quantityAvailable: quantityController.text,
-                    );
-                    _menuScreenController.menuItems.add(newItem);
-                  });
+                //   setState(() {
+                //     final newItem = FoodMenuItem(
+                //       imageUrl: _image != null ? _image!.path : null,
+                //       name: nameController.text,
+                //       description: descriptionController.text,
+                //       price: priceController.text,
+                //       availableAllTime: availableAllTime,
+                //       availableForBreakfast: availableForBreakfast,
+                //       availableForLunch: availableForLunch,
+                //       availableForEveningTea: availableForEvinigTea,
+                //       availableForDinner: availableForDinner,
+                //       categories: ref.watch(categoriesProvider),
+                //       // drinks: drinks,
+                //       // veg: veg,
+                //       // nonVeg: nonVeg,
+                //       // rice: rice,
+                //       // snacks: snacks,
+                //       // salads: salads,
+                //       // desserts: desserts,
+                //       pickupOption: pickupOption,
+                //       deliveryOption: deliveryOption,
+                //       quantityAvailable: quantityController.text,
+                //     );
+                //     _menuScreenController.menuItems.add(newItem);
+                //   });
 
-                  _clearFormFields();
-                  Navigator.of(context).pop();
-                } catch (e) {
-                  print(e.toString());
-                }
+                //   _clearFormFields();
+                //   Navigator.of(context).pop();
+                // } catch (e) {
+                //   print(e.toString());
+                // }
               },
             ),
           ],
