@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:restaurant_app/Screens/Sub-screens/menu_screen2.dart';
+import 'package:restaurant_app/Screens/Main%20screens/menu_screen2.dart';
 import 'package:restaurant_app/models/food_menu_model.dart';
 import 'package:restaurant_app/providers/availability_provider.dart';
 import 'package:restaurant_app/providers/delivery_options_provider.dart';
@@ -38,6 +38,10 @@ class OpenAddDialoq {
 
     var selectedImage = ref.watch(imageProvider);
 
+    // final themeMode = ref.watch(themeModeProvider);
+    // Color colour =
+    //     themeMode == ThemeMode.dark ? Colors.white70 : Colors.black54;
+
     selectedMenuItemIndex = null;
     availablAllTime = ref.watch(everyTime);
     breakfst = ref.watch(breakfast);
@@ -54,7 +58,14 @@ class OpenAddDialoq {
 
     return StatefulBuilder(
       builder: (context, setState) => AlertDialog(
-        title: const Text("Add Food Item"),
+        // backgroundColor:
+        //     themeMode == ThemeMode.dark ? Colors.black : Colors.white,
+        title: Text(
+          "Add Food Item",
+          style: TextStyle(
+              // color: colour,
+              ),
+        ),
         content: SingleChildScrollView(
           child: Column(
             children: [
@@ -70,45 +81,67 @@ class OpenAddDialoq {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: const Text('Select Image'),
+                        // backgroundColor: themeMode == ThemeMode.dark
+                        //     ? Colors.black
+                        //     : Colors.white,
+                        title: Text(
+                          'Select Image',
+                          // style: TextStyle(color: colour),
+                        ),
                         content: SingleChildScrollView(
                           child: ListBody(
                             children: <Widget>[
                               GestureDetector(
-                                child: const Text('Gallery'),
+                                child: Text(
+                                  'Gallery',
+                                  // style: TextStyle(color: colour),
+                                ),
                                 onTap: () async {
                                   final _image = await ImagePicker()
                                       .pickImage(source: ImageSource.gallery);
-                                  // setState(() {
-                                  //   selectedImage = _image != null
-                                  //       ? File(_image.path)
-                                  //       : null;
-                                  // });
+                                  setState(() {
+                                    selectedImage = _image != null
+                                        ? File(_image.path)
+                                        : null;
+                                  });
 
                                   if (_image != null) {
-                                    final croppedFile =
+                                    CroppedFile? cropped =
                                         await ImageCropper().cropImage(
                                       sourcePath: _image.path,
-                                      aspectRatio: const CropAspectRatio(
-                                          ratioX: 1.0, ratioY: 1.0),
-                                      compressQuality: 100,
-                                      maxWidth: 800,
-                                      maxHeight: 800,
+                                      aspectRatioPresets: [
+                                        CropAspectRatioPreset.square,
+                                        CropAspectRatioPreset.ratio3x2,
+                                        CropAspectRatioPreset.original,
+                                        CropAspectRatioPreset.ratio4x3,
+                                        CropAspectRatioPreset.ratio16x9
+                                      ],
+                                      uiSettings: [
+                                        AndroidUiSettings(
+                                            toolbarTitle: 'Crop',
+                                            cropGridColor: Colors.black,
+                                            initAspectRatio:
+                                                CropAspectRatioPreset.original,
+                                            lockAspectRatio: false),
+                                        IOSUiSettings(title: 'Crop')
+                                      ],
                                     );
 
-                                    if (croppedFile != null) {
+                                    if (cropped != null) {
                                       setState(() {
-                                        selectedImage = croppedFile.path;
+                                        selectedImage = File(cropped.path);
                                       });
                                     }
                                   }
-
                                   Navigator.pop(context);
                                 },
                               ),
-                              const SizedBox(height: 16),
+                              SizedBox(height: 16),
                               GestureDetector(
-                                child: const Text('Camera'),
+                                child: Text(
+                                  'Camera',
+                                  // style: TextStyle(color: colour),
+                                ),
                                 onTap: () async {
                                   final _image = await ImagePicker()
                                       .pickImage(source: ImageSource.camera);
@@ -128,37 +161,59 @@ class OpenAddDialoq {
                     },
                   );
                 },
-                child: const Text("Upload Image"),
+                child: Text("Upload Image"),
+                style: ElevatedButton.styleFrom(
+                    // backgroundColor:
+                    //     themeMode == ThemeMode.dark ? Colors.white70 : null,
+                    ),
               ),
               TextFormField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Name',
+                  labelStyle: TextStyle(
+                      // color: colour,
+                      ),
                 ),
                 controller: nameController,
               ),
               TextFormField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Description',
+                  labelStyle: TextStyle(
+                      // color: colour,
+                      ),
                 ),
                 controller: descriptionController,
               ),
               TextFormField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Price',
+                  labelStyle: TextStyle(
+                      // color: colour,
+                      ),
                 ),
                 keyboardType: TextInputType.number,
                 controller: priceController,
               ),
               TextFormField(
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Quantity available',
+                  labelStyle: TextStyle(
+                      // color: colour,
+                      ),
                 ),
                 keyboardType: TextInputType.number,
                 controller: quantityController,
               ),
-              const Text("Availability"),
+              Text(
+                "Availability",
+                // style: TextStyle(color: colour),
+              ),
               CheckboxListTile(
-                title: const Text('Everytime'),
+                title: Text(
+                  'Everytime',
+                  // style: TextStyle(color: colour),
+                ),
                 value: availablAllTime,
                 onChanged: (bool? value) {
                   setState(() {
@@ -167,7 +222,10 @@ class OpenAddDialoq {
                 },
               ),
               CheckboxListTile(
-                title: const Text('Breakfast'),
+                title: Text(
+                  'Breakfast',
+                  // style: TextStyle(color: colour),
+                ),
                 value: breakfst,
                 onChanged: (bool? value) {
                   setState(() {
@@ -176,7 +234,10 @@ class OpenAddDialoq {
                 },
               ),
               CheckboxListTile(
-                title: const Text('Lunch'),
+                title: Text(
+                  'Lunch',
+                  // style: TextStyle(color: colour),
+                ),
                 value: lnch,
                 onChanged: (bool? value) {
                   setState(() {
@@ -185,7 +246,10 @@ class OpenAddDialoq {
                 },
               ),
               CheckboxListTile(
-                title: const Text('Evening Tea'),
+                title: Text(
+                  'Evening Tea',
+                  // style: TextStyle(color: colour),
+                ),
                 value: evngT,
                 onChanged: (bool? value) {
                   setState(() {
@@ -194,7 +258,10 @@ class OpenAddDialoq {
                 },
               ),
               CheckboxListTile(
-                title: const Text('Dinner'),
+                title: Text(
+                  'Dinner',
+                  // style: TextStyle(color: colour),
+                ),
                 value: dnnr,
                 onChanged: (bool? value) {
                   setState(() {
@@ -202,27 +269,29 @@ class OpenAddDialoq {
                   });
                 },
               ),
-              const Text("Categories"),
+              Text(
+                "Categories",
+                // style: TextStyle(color: colour),
+              ),
               TypeAheadField<String>(
                 textFieldConfiguration: TextFieldConfiguration(
                   controller: categoryController,
                   decoration: InputDecoration(
                     labelText: 'Categories',
-                    border: const OutlineInputBorder(),
+                    border: OutlineInputBorder(),
                     suffix: ElevatedButton(
                       onPressed: () {
-                        setState(() {
-                          ref
-                              .read(categoriesProvider.notifier)
-                              .addCategory(categoryController!.text);
-                          // ref.invalidate(categoriesProvider);
+                        ref
+                            .read(categoriesProvider.notifier)
+                            .addCategory(categoryController!.text);
+                        // ref.invalidate(categoriesProvider);
 
-                          categoryController!.clear();
-                          print(
-                              "Length of categoriesProvider: ${ref.read(categoriesProvider).length}");
-                        });
+                        categoryController!.clear();
+
+                        print(
+                            "Length of categoriesProvider: ${ref.read(categoriesProvider).length}");
                       },
-                      child: const Text("Add"),
+                      child: Text("Add"),
                     ),
                   ),
                 ),
@@ -265,9 +334,15 @@ class OpenAddDialoq {
                   },
                 ),
               ),
-              const Text("Delivery options"),
+              Text(
+                "Delivery options",
+                // style: TextStyle(color: colour),
+              ),
               CheckboxListTile(
-                title: const Text('Pick Up'),
+                title: Text(
+                  'Pick Up',
+                  // style: TextStyle(color: colour),
+                ),
                 value: pickUp,
                 onChanged: (bool? value) {
                   setState(() {
@@ -276,7 +351,10 @@ class OpenAddDialoq {
                 },
               ),
               CheckboxListTile(
-                title: const Text('Home Delivery'),
+                title: Text(
+                  'Home Delivery',
+                  // style: TextStyle(color: colour),
+                ),
                 value: homeDelivery,
                 onChanged: (bool? value) {
                   setState(() {
@@ -293,7 +371,7 @@ class OpenAddDialoq {
               clearFormFields(context, ref);
               Navigator.pop(context);
             },
-            child: const Text("Cancel"),
+            child: Text("Cancel"),
           ),
           TextButton(
             onPressed: () {
@@ -312,7 +390,7 @@ class OpenAddDialoq {
                     pickupOption: pickUp!,
                     deliveryOption: homeDelivery!,
                     quantityAvailable: quantityController.text,
-                    categories: ref.watch(categoriesProvider),
+                    categories: ref.read(categoriesProvider),
                   );
                   if (nameController.text != "" &&
                       descriptionController.text != "" &&
@@ -334,7 +412,7 @@ class OpenAddDialoq {
                 print(e.toString());
               }
             },
-            child: const Text("Add"),
+            child: Text("Add"),
           ),
         ],
       ),

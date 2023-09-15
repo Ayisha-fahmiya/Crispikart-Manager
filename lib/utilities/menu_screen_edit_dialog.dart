@@ -1,11 +1,8 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:restaurant_app/Screens/Sub-screens/menu_screen.dart';
-import 'package:restaurant_app/Screens/Sub-screens/menu_screen2.dart';
+import 'package:restaurant_app/Screens/Main%20screens/menu_screen2.dart';
 import 'package:restaurant_app/controllers/categories_controller.dart';
 import 'package:restaurant_app/models/food_menu_model.dart';
 import 'package:restaurant_app/providers/category_provider.dart';
@@ -133,12 +130,15 @@ class OpenEditDialog {
                       border: const OutlineInputBorder(),
                       suffix: ElevatedButton(
                         onPressed: () {
+                          ref.read(categoriesProvider.notifier).state = ref
+                              .read(categoriesProvider.notifier)
+                              .addCategory(categoryController!.text);
                           setState(() {
-                            Categories()
-                                .selectedCategory
-                                .add(categoryController!.text);
-                            print(Categories().selectedCategory.length);
+                            item.categories.add(categoryController!.text);
                           });
+                          categoryController!.clear();
+                          print(
+                              "Length of categoriesProvider: ${ref.read(categoriesProvider).length}");
                         },
                         child: const Text("Add"),
                       ),
@@ -163,26 +163,25 @@ class OpenEditDialog {
                     Categories().selectedCategory.add(suggestion);
                   },
                 ),
-                Chip(
-                  label: Text("data"),
-                  onDeleted: () {},
+                SizedBox(
+                  height: item.categories.length * R.sh(50, context),
+                  width: R.sw(375, context),
+                  child: ListView.builder(
+                    itemCount: item.categories.length,
+                    itemBuilder: (context, index) {
+                      final category = item.categories[index];
+                      return Chip(
+                        label: Text(category),
+                        onDeleted: () {
+                          item.categories.removeAt(index);
+                          print(
+                              "Length of categoriesProvider: ${item.categories.length}");
+                        },
+                      );
+                    },
+                  ),
                 ),
-                // SizedBox(
-                //   height:
-                //       Categories().selectedCategory.length * R.sh(10, context),
-                //   width: R.sw(375, context),
-                //   child: GridView.builder(
-                //     gridDelegate:
-                //         const SliverGridDelegateWithFixedCrossAxisCount(
-                //       crossAxisCount: 3,
-                //     ),
-                //     itemCount: Categories().selectedCategory.length,
-                //     itemBuilder: (context, index) => Chip(
-                //       label: Text(Categories().selectedCategory[index]),
-                //       onDeleted: () {},
-                //     ),
-                //   ),
-                // ),
+
                 const Text("Delivery options"),
                 CheckboxListTile(
                   title: const Text('Pick-up'),

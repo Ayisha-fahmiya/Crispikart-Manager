@@ -1,16 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:restaurant_app/Widgets/menu_hedding_style.dart';
-import 'package:restaurant_app/controllers/categories_controller.dart';
 import 'package:restaurant_app/controllers/menu_screen_controller.dart';
-import 'package:restaurant_app/providers/category_provider.dart';
 import 'package:restaurant_app/providers/form_field_controller_provider.dart';
 import 'package:restaurant_app/responsive/responsive.dart';
 import 'package:restaurant_app/utilities/menu_screen_edit_dialog.dart';
 import 'package:restaurant_app/utilities/menu_screen_open_add_dialog.dart';
-import 'package:restaurant_app/utilities/pick_image.dart';
 
 final MenuScreenController menuScreenController = MenuScreenController();
 
@@ -112,6 +108,7 @@ class _MenuScreen2State extends ConsumerState<MenuScreen2> {
               ),
               children: [
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const MenuHeaddingStyle(text: "Description"),
                     Text(item.description),
@@ -143,11 +140,11 @@ class _MenuScreen2State extends ConsumerState<MenuScreen2> {
                         : const SizedBox(),
                     const MenuHeaddingStyle(text: "Category"),
                     SizedBox(
-                      height: item.categories.length * R.sh(50, context),
+                      height: item.categories.length * R.sh(20, context),
                       child: ListView.builder(
                         itemCount: item.categories.length,
                         itemBuilder: (context, index) {
-                          return Text(item.categories[index]);
+                          return Text("- ${item.categories[index]}");
                         },
                       ),
                     ),

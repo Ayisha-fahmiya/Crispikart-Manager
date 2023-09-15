@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final categoryTextEditingController =
-    Provider((ref) => TextEditingController());
-final categoryProvider = Provider((ref) => null);
+    StateProvider((ref) => TextEditingController());
+// final categoryProvider = StateProvider((ref) => null);
 
 class CategoriesNotifier extends StateNotifier<List<String>> {
-  CategoriesNotifier() : super([]); // Initialize with an empty list
+  CategoriesNotifier() : super([]);
 
-  // Add a category to the list
   addCategory(String category) {
     return state = [...state, category];
   }

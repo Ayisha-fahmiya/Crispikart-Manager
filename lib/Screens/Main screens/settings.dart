@@ -1,29 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_app/Screens/Sub-screens/profile_settings_screen.dart';
-import 'package:restaurant_app/utilities/theme_bloc.dart';
+import 'package:restaurant_app/providers/app_theme_provider.dart';
+import 'package:restaurant_app/providers/language_provider.dart';
+import 'package:restaurant_app/responsive/responsive.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  @override
   Widget build(BuildContext context) {
+    List<dynamic> languages = ref.watch(languagesProvider);
+    String language = ref.watch(selectedLanguageProvider);
+    final themeMode = ref.watch(themeModeProvider);
+    Color colour =
+        themeMode == ThemeMode.dark ? Colors.white70 : Colors.black87;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Settings',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 26),
         ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.manage_accounts,
               size: 26,
+              color: colour,
             ),
-            title: const Text('Profile Settings'),
+            title: Text(
+              'Profile Settings',
+              style: TextStyle(
+                color: colour,
+              ),
+            ),
             onTap: () {
               Navigator.push(
                 context,
@@ -34,34 +52,46 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.translate,
               size: 26,
+              color: colour,
             ),
-            title: const Text('Language'),
-            subtitle: const Text('English'),
+            title: Text(
+              'Language',
+              style: TextStyle(
+                color: colour,
+              ),
+            ),
+            subtitle: Text(language),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return const AlertDialog(
-                    title: Text('Select Language'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          title: Text('English'),
-                          onTap: null,
-                        ),
-                        ListTile(
-                          title: Text('Hindi'),
-                          onTap: null,
-                        ),
-                        ListTile(
-                          title: Text('Malayalam'),
-                          onTap: null,
-                        ),
-                      ],
+                  return AlertDialog(
+                    title: Text(
+                      'Select Language',
+                    ),
+                    content: SizedBox(
+                      height: R.sh(180, context),
+                      width: R.sw(500, context),
+                      child: ListView.builder(
+                        itemCount: languages.length,
+                        itemBuilder: (context, index) {
+                          final lng = languages[index];
+                          return ListTile(
+                            title: Text(lng),
+                            onTap: () {
+                              setState(() {
+                                ref
+                                    .read(selectedLanguageProvider.notifier)
+                                    .state = lng;
+                              });
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                      ),
                     ),
                   );
                 },
@@ -69,58 +99,40 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           SwitchListTile(
-            secondary:
-                // themeState
-                //     ? const Icon(
-                //         Icons.dark_mode,
-                //         size: 26,
-                //       )
-                //     :
-                const Icon(
-              Icons.light_mode,
+            secondary: Icon(
+              themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
               size: 26,
+              color: colour,
             ),
-            title: const Text('App Theme'),
-            subtitle:
-                //  themeState
-                //     ? const Text('Dark Theme')
-                //     :
-                const Text('Light Theme'),
-            value: false,
+            title: Text(
+              'App Theme',
+              style: TextStyle(
+                color: colour,
+              ),
+            ),
+            subtitle: Text(
+                themeMode == ThemeMode.dark ? 'Dark Theme' : 'Light Theme'),
+            value: themeMode == ThemeMode.dark ? true : false,
             onChanged: (value) {
-              // themeCubit.toggleTheme();
+              if (value) {
+                ref.read(themeModeProvider.notifier).state = ThemeMode.dark;
+              } else {
+                ref.read(themeModeProvider.notifier).state = ThemeMode.light;
+              }
             },
           ),
-          // Consumer<ThemeCubit>(
-          //   builder: (context, themeCubit, _) {
-          //     final themeState = themeCubit.state;
-          //     return SwitchListTile(
-          //       secondary: themeState
-          //           ? const Icon(
-          //               Icons.dark_mode,
-          //               size: 26,
-          //             )
-          //           : const Icon(
-          //               Icons.light_mode,
-          //               size: 26,
-          //             ),
-          //       title: const Text('App Theme'),
-          //       subtitle: themeState
-          //           ? const Text('Dark Theme')
-          //           : const Text('Light Theme'),
-          //       value: themeState,
-          //       onChanged: (value) {
-          //         themeCubit.toggleTheme();
-          //       },
-          //     );
-          //   },
-          // ),
           ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.help,
               size: 26,
+              color: colour,
             ),
-            title: const Text('Help & Support'),
+            title: Text(
+              'Help & Support',
+              style: TextStyle(
+                color: colour,
+              ),
+            ),
             onTap: () {},
           ),
         ],

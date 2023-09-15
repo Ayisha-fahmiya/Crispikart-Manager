@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:provider/provider.dart';
+import 'package:restaurant_app/Screens/Main%20screens/chat_screen.dart';
 import 'package:restaurant_app/Screens/Main%20screens/home_screen.dart';
 import 'package:restaurant_app/Screens/Main%20screens/settings.dart';
-import 'package:restaurant_app/Screens/Sub-screens/menu_screen.dart';
-import 'package:restaurant_app/Screens/Sub-screens/menu_screen2.dart';
+import 'package:restaurant_app/Screens/Main%20screens/menu_screen2.dart';
 import 'package:restaurant_app/providers/app_theme_provider.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
-
-import '../../utilities/theme_bloc.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -30,7 +27,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = ref.watch(selectedTheme);
+    final themeMode = ref.watch(themeModeProvider);
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
@@ -42,26 +39,14 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           child: Image.asset(
             'assets/logos/Logo_color-01.png',
             height: 36,
-            color:
-                // Provider.of<ThemeCubit>(context).brightness == Brightness.dark
-                // ?
-                theme ? appTheme.colorScheme.onPrimary : null,
+            color: themeMode == ThemeMode.dark
+                ? Colors.white
+                : appTheme.colorScheme.primary,
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              theme = !theme;
-              print(theme);
-              // Provider.of<ThemeCubit>(context, listen: false).toggleTheme();
-            },
-            icon: Icon(
-              // Provider.ons.light_mode_rounded
-              //     :f<ThemeCubit>(context).brightness == Brightness.dark
-              //     ? Ico
-              theme ? Icons.dark_mode_rounded : Icons.light_mode_rounded,
-              size: 30,
-            ),
+          Icon(
+            themeMode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
           ),
         ],
       ),
@@ -74,8 +59,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
         },
         children: const [
           HomeScreen(),
-          Center(child: Text('Chat')),
-          // MenuScreen(),
+          ChatScreen(),
           MenuScreen2(),
           SettingsScreen(),
         ],
@@ -167,15 +151,3 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     );
   }
 }
-
-// class ThemeCubit extends ChangeNotifier {
-//   Brightness _brightness = Brightness.light;
-
-//   Brightness get brightness => _brightness;
-
-//   void toggleTheme() {
-//     _brightness =
-//         _brightness == Brightness.light ? Brightness.dark : Brightness.light;
-//     notifyListeners();
-//   }
-// }
