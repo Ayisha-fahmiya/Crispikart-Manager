@@ -2,15 +2,17 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:restaurant_app/Screens/Main%20screens/menu_screen2.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:restaurant_app/controllers/categories_controller.dart';
+import 'package:restaurant_app/controllers/menu_screen_controller.dart';
 import 'package:restaurant_app/models/food_menu_model.dart';
+import 'package:restaurant_app/providers/app_theme_provider.dart';
 import 'package:restaurant_app/providers/category_provider.dart';
 import 'package:restaurant_app/providers/form_field_controller_provider.dart';
+import 'package:restaurant_app/providers/image_picker_provider.dart';
 import 'package:restaurant_app/responsive/responsive.dart';
 import 'package:restaurant_app/utilities/clear_form.dart';
 import 'package:restaurant_app/utilities/menu_screen_open_add_dialog.dart';
-import 'package:restaurant_app/utilities/pick_image.dart';
 
 File? image;
 
@@ -21,8 +23,14 @@ class OpenEditDialog {
     final descriptionController = ref.watch(descriptionControllerProvider);
     final priceController = ref.watch(priceControllerProvider);
     final quantityController = ref.watch(quantityControllerProvider);
+    var selectedImage = ref.watch(imageProvider);
+    TextEditingController editctgryController =
+        ref.watch(editCategoryController);
+    final menuScreenController = ref.watch(menuItemsProvider);
+    List selectedCategories = ref.watch(categoriesProvider);
 
-    final item = menuScreenController.menuItems[index];
+    final item = menuScreenController[index];
+    selectedImage = item.imageUrl;
     selectedMenuItemIndex = index;
     nameController.text = item.name;
     descriptionController.text = item.description;
@@ -35,10 +43,12 @@ class OpenEditDialog {
     dnnr = item.availableForDinner;
     pickUp = item.pickupOption;
     homeDelivery = item.deliveryOption;
+    selectedCategories = item.categories;
 
-    // showDialog(
-    //   context: context,
-    //   builder: (context) {
+    final themeMode = ref.watch(themeModeProvider);
+    Color colour =
+        themeMode == ThemeMode.dark ? Colors.white70 : Colors.black54;
+
     return StatefulBuilder(
       builder: (context, setState) {
         return AlertDialog(
@@ -46,32 +56,83 @@ class OpenEditDialog {
           content: SingleChildScrollView(
             child: Column(
               children: [
+                if (selectedImage != null)
+                  SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: Image.file(selectedImage!),
+                  ),
                 ElevatedButton(
                   onPressed: () {
-                    selectImages(context, ref, image);
-                    // openImagePickerDialog(context, image);
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text(
+                            'Select Image',
+                          ),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: <Widget>[
+                                GestureDetector(
+                                  child: const Text(
+                                    'Gallery',
+                                  ),
+                                  onTap: () async {
+                                    final _image = await ImagePicker()
+                                        .pickImage(source: ImageSource.gallery);
+                                    setState(() {
+                                      selectedImage = _image != null
+                                          ? File(_image.path)
+                                          : null;
+                                    });
+
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+                                GestureDetector(
+                                  child: const Text(
+                                    'Camera',
+                                  ),
+                                  onTap: () async {
+                                    final _image = await ImagePicker()
+                                        .pickImage(source: ImageSource.camera);
+
+                                    setState(() {
+                                      selectedImage = _image != null
+                                          ? File(_image.path)
+                                          : null;
+                                    });
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
                   },
                   child: const Text("Update Image"),
                 ),
-                // if (selectedImage != null)
-                //   SizedBox(
-                //     width: 100,
-                //     height: 100,
-                //     child: Image.file(selectedImage!),
-                //   ),
                 TextField(
+                  style: TextStyle(color: colour),
                   decoration: const InputDecoration(labelText: "Name"),
                   controller: nameController,
                 ),
                 TextField(
+                  style: TextStyle(color: colour),
                   decoration: const InputDecoration(labelText: "Description"),
                   controller: descriptionController,
                 ),
                 TextField(
+                  style: TextStyle(color: colour),
                   decoration: const InputDecoration(labelText: "Price"),
                   controller: priceController,
                 ),
                 TextField(
+                  style: TextStyle(color: colour),
                   decoration: const InputDecoration(labelText: "Quantity"),
                   controller: quantityController,
                 ),
@@ -124,21 +185,19 @@ class OpenEditDialog {
                 const Text("Categories"),
                 TypeAheadField<String>(
                   textFieldConfiguration: TextFieldConfiguration(
-                    controller: categoryController,
+                    controller: editctgryController,
+                    style: TextStyle(color: colour),
                     decoration: InputDecoration(
                       labelText: 'Categories',
                       border: const OutlineInputBorder(),
                       suffix: ElevatedButton(
                         onPressed: () {
-                          ref.read(categoriesProvider.notifier).state = ref
-                              .read(categoriesProvider.notifier)
-                              .addCategory(categoryController!.text);
                           setState(() {
-                            item.categories.add(categoryController!.text);
+                            selectedCategories.add(editctgryController.text);
                           });
-                          categoryController!.clear();
+                          editctgryController.clear();
                           print(
-                              "Length of categoriesProvider: ${ref.read(categoriesProvider).length}");
+                              "Length of categoriesProvider: ${selectedCategories.length}");
                         },
                         child: const Text("Add"),
                       ),
@@ -153,9 +212,11 @@ class OpenEditDialog {
                   },
                   itemBuilder: (context, suggestion) {
                     return ListTile(
+                      tileColor:
+                          themeMode == ThemeMode.dark ? Colors.black87 : null,
                       title: Text(suggestion),
                       onTap: () {
-                        categoryController!.text = suggestion;
+                        editctgryController.text = suggestion;
                       },
                     );
                   },
@@ -173,7 +234,9 @@ class OpenEditDialog {
                       return Chip(
                         label: Text(category),
                         onDeleted: () {
-                          item.categories.removeAt(index);
+                          setState(() {
+                            item.categories.removeAt(index);
+                          });
                           print(
                               "Length of categoriesProvider: ${item.categories.length}");
                         },
@@ -181,7 +244,6 @@ class OpenEditDialog {
                     },
                   ),
                 ),
-
                 const Text("Delivery options"),
                 CheckboxListTile(
                   title: const Text('Pick-up'),
@@ -216,7 +278,7 @@ class OpenEditDialog {
               onPressed: () {
                 try {
                   final updatedItem = FoodMenuItem(
-                    imageUrl: image != null ? image! : null,
+                    imageUrl: selectedImage != null ? selectedImage! : null,
                     name: nameController.text,
                     description: descriptionController.text,
                     price: priceController.text,
@@ -228,11 +290,10 @@ class OpenEditDialog {
                     pickupOption: pickUp!,
                     deliveryOption: homeDelivery!,
                     quantityAvailable: quantityController.text,
-                    categories: ref.watch(categoriesProvider),
+                    categories: selectedCategories,
                   );
                   setState(() {
-                    menuScreenController.menuItems[selectedMenuItemIndex!] =
-                        updatedItem;
+                    menuScreenController[selectedMenuItemIndex!] = updatedItem;
                   });
                   clearFormFields(context, ref);
                   Navigator.pop(context);

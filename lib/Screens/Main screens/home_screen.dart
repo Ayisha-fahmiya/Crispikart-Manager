@@ -83,7 +83,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   ),
                 ),
                 const SizedBox(height: 16),
-                ReminderTile(
+                TileWidgetStyle(
                   orderNumber: '1234',
                   customerName: 'John Doe',
                   deliveryTime: DateTime.now().add(

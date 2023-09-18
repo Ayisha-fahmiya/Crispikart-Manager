@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:restaurant_app/Widgets/menu_hedding_style.dart';
 import 'package:restaurant_app/controllers/menu_screen_controller.dart';
+import 'package:restaurant_app/providers/app_theme_provider.dart';
 import 'package:restaurant_app/providers/form_field_controller_provider.dart';
 import 'package:restaurant_app/responsive/responsive.dart';
 import 'package:restaurant_app/utilities/menu_screen_edit_dialog.dart';
 import 'package:restaurant_app/utilities/menu_screen_open_add_dialog.dart';
-
-final MenuScreenController menuScreenController = MenuScreenController();
 
 class MenuScreen2 extends ConsumerStatefulWidget {
   const MenuScreen2({super.key});
@@ -25,7 +24,7 @@ class _MenuScreen2State extends ConsumerState<MenuScreen2> {
 
   void deleteMenuItem(int index) {
     setState(() {
-      menuScreenController.menuItems.removeAt(index);
+      ref.read(menuItemsProvider).removeAt(index);
     });
   }
 
@@ -40,6 +39,9 @@ class _MenuScreen2State extends ConsumerState<MenuScreen2> {
 
   @override
   Widget build(BuildContext context) {
+    final menuScreenController = ref.watch(menuItemsProvider);
+    final themeMode = ref.watch(themeModeProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Food Menu"),
@@ -65,9 +67,9 @@ class _MenuScreen2State extends ConsumerState<MenuScreen2> {
         ],
       ),
       body: ListView.builder(
-        itemCount: menuScreenController.menuItems.length,
+        itemCount: menuScreenController.length,
         itemBuilder: (context, index) {
-          final item = menuScreenController.menuItems[index];
+          final item = menuScreenController[index];
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -94,11 +96,18 @@ class _MenuScreen2State extends ConsumerState<MenuScreen2> {
               ),
               title: Text(
                 item.name,
+                style: TextStyle(
+                  color: themeMode == ThemeMode.dark
+                      ? Colors.white70
+                      : Colors.black,
+                ),
               ),
               subtitle: RichText(
                 text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: themeMode == ThemeMode.dark
+                        ? Colors.white54
+                        : Colors.black,
                   ),
                   children: [
                     const TextSpan(text: "₹ "),

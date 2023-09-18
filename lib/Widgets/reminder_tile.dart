@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 import 'package:restaurant_app/providers/app_theme_provider.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
 
-class ReminderTile extends ConsumerStatefulWidget {
+class TileWidgetStyle extends ConsumerStatefulWidget {
   final String orderNumber;
   final String customerName;
   final DateTime deliveryTime;
   final IconData orderIcon;
 
-  const ReminderTile({
+  const TileWidgetStyle({
     Key? key,
     required this.orderNumber,
     required this.customerName,
@@ -19,10 +18,10 @@ class ReminderTile extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  ConsumerState<ReminderTile> createState() => _ReminderTileState();
+  ConsumerState<TileWidgetStyle> createState() => _TileWidgetStyleState();
 }
 
-class _ReminderTileState extends ConsumerState<ReminderTile> {
+class _TileWidgetStyleState extends ConsumerState<TileWidgetStyle> {
   bool outForDelivery = true;
 
   @override
@@ -31,8 +30,10 @@ class _ReminderTileState extends ConsumerState<ReminderTile> {
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: const Color(0xFF4F5252)),
-        color: Colors.transparent,
+        // border: Border.all(width: 2, color: const Color(0xFF4F5252)),
+        color: themeMode == ThemeMode.dark
+            ? Color.fromARGB(255, 20, 20, 20)
+            : appTheme.colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(

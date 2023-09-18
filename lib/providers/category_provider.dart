@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final categoryTextEditingController =
     StateProvider((ref) => TextEditingController());
-// final categoryProvider = StateProvider((ref) => null);
 
 class CategoriesNotifier extends StateNotifier<List<String>> {
   CategoriesNotifier() : super([]);
@@ -17,3 +16,5 @@ final categoriesProvider =
     StateNotifierProvider<CategoriesNotifier, List<String>>(
   (ref) => CategoriesNotifier(),
 );
+
+final editCategoryController = StateProvider((ref) => TextEditingController());
