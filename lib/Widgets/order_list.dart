@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Widgets/reminder_tile.dart';
+import 'package:restaurant_app/controllers/orders.dart';
 
 class OrderList extends StatelessWidget {
   final String status;
@@ -12,13 +13,16 @@ class OrderList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       separatorBuilder: (context, index) => const SizedBox(height: 16),
-      itemCount: 5,
+      itemCount: allOrders.length,
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) {
-        return TileWidgetStyle(
-          orderNumber: "1",
-          customerName: "asdf",
-          deliveryTime: DateTime.now().add(const Duration(hours: 1)),
-          orderIcon: iconData,
+        return Center(
+          child: TileWidgetStyle(
+            orderNumber: allOrders[index].orderNumber,
+            customerName: allOrders[index].customerName,
+            deliveryTime: DateTime.now().add(const Duration(hours: 1)),
+            orderIcon: iconData,
+          ),
         );
       },
     );

@@ -4,7 +4,7 @@ ThemeData appTheme = ThemeData(
   useMaterial3: true,
   colorScheme: const ColorScheme(
     background: Color(0xfff5f5f5),
-    onBackground: Color.fromARGB(255, 22, 0, 0),
+    onBackground: Color(0xFF160000),
     primary: Color(0xFFC73047),
     onPrimary: Colors.white,
     secondary: Colors.black,
@@ -15,7 +15,7 @@ ThemeData appTheme = ThemeData(
     error: Color(0xffb00020),
     onError: Colors.white,
     outline: Color(0xff801515),
-    primaryContainer: Color.fromARGB(255, 255, 225, 225),
+    primaryContainer: Color(0xffffaaaa),
     onPrimaryContainer: Colors.white,
   ),
   fontFamily: 'Poppins',
@@ -75,7 +75,7 @@ class AppTheme {
     dialogTheme: DialogTheme(
       surfaceTintColor: Colors.black,
       backgroundColor: Colors.grey[900],
-      titleTextStyle: TextStyle(
+      titleTextStyle: const TextStyle(
         color: Colors.white70,
       ),
     ),
@@ -84,6 +84,10 @@ class AppTheme {
         color: Colors.white,
       ),
       textColor: Colors.white70,
+    ),
+    drawerTheme: DrawerThemeData(
+      backgroundColor: Colors.grey[900],
+      surfaceTintColor: Colors.grey[900],
     ),
     fontFamily: 'Poppins',
   );

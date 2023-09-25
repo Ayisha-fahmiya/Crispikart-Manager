@@ -1,6 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/Screens/otp_verification.dart';
+import 'package:restaurant_app/services/api_services.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:restaurant_app/Widgets/easy_widgets.dart';
 
@@ -12,6 +13,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  ApiServices apiServices = ApiServices();
   void showSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text(
@@ -162,15 +164,17 @@ class _SignInScreenState extends State<SignInScreen> {
                   const SizedBox(height: 16),
                   MyElevatedButton(
                     buttonName: 'Continue',
-                    onPressed: () {
-                      setState(() {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const OtpVerificationScreen()),
-                        );
-                      });
+                    onPressed: () async {
+                      // const apiKey = 'http://127.0.0.1:8000/api/send-otp/';
+
+                      // await apiServices.sendOTP(
+                      //     phoneController.text, apiKey, context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const OtpVerificationScreen(),
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(height: 26),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:restaurant_app/Screens/Sub-screens/help_and_support_screen.dart';
 import 'package:restaurant_app/Screens/Sub-screens/profile_settings_screen.dart';
 import 'package:restaurant_app/providers/app_theme_provider.dart';
 import 'package:restaurant_app/providers/language_provider.dart';
@@ -22,11 +23,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         themeMode == ThemeMode.dark ? Colors.white70 : Colors.black87;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Settings',
-        ),
-      ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
@@ -133,7 +129,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 color: colour,
               ),
             ),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HelpAndSupport(),
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:restaurant_app/Screens/Main%20screens/menu_screen2.dart';
 import 'package:restaurant_app/Screens/Main%20screens/settings.dart';
+import 'package:restaurant_app/Screens/Sub-screens/all_orders_screen.dart';
+import 'package:restaurant_app/Screens/Sub-screens/profile_settings_screen.dart';
 import 'package:restaurant_app/Screens/signin_screen.dart';
+import 'package:restaurant_app/providers/app_theme_provider.dart';
 import 'package:restaurant_app/utilities/app_theme.dart';
 
 class MyElevatedButton extends StatelessWidget {
@@ -32,18 +37,19 @@ class MyElevatedButton extends StatelessWidget {
   }
 }
 
-class DrawerWidget extends StatelessWidget {
+class DrawerWidget extends ConsumerWidget {
   const DrawerWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
 
     return Drawer(
-      backgroundColor:
-          isDarkMode ? const Color(0xFF202020) : appTheme.colorScheme.onPrimary,
+      backgroundColor: themeMode == ThemeMode.dark
+          ? const Color(0xFF202020)
+          : appTheme.colorScheme.onPrimary,
       child: Material(
-        color: isDarkMode
+        color: themeMode == ThemeMode.dark
             ? const Color(0xFF202020)
             : appTheme.colorScheme.onPrimary,
         child: ListView(
@@ -57,7 +63,12 @@ class DrawerWidget extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    icon: const Icon(Icons.arrow_back),
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: themeMode == ThemeMode.dark
+                          ? Colors.white
+                          : appTheme.colorScheme.primary,
+                    ),
                     color: appTheme.colorScheme.primary,
                   ),
                   const SizedBox(height: 12),
@@ -87,8 +98,10 @@ class DrawerWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Divider(
-                    thickness: 2,
-                    color: isDarkMode ? Colors.grey[750] : Colors.grey[350],
+                    thickness: 1,
+                    color: themeMode == ThemeMode.dark
+                        ? Colors.grey[600]
+                        : Colors.grey[350],
                     endIndent: 30,
                     indent: 30,
                   ),
@@ -118,7 +131,7 @@ class DrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const Scaffold(), // Page 1
+          builder: (context) => const ProfileSettings(), // Page 1
         ));
         break;
       case 1:
@@ -126,11 +139,21 @@ class DrawerWidget extends StatelessWidget {
           builder: (context) => const SettingsScreen(), // Page 2
         ));
         break;
+      case 2:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const MenuScreen2(), // Page 3
+        ));
+        break;
+      case 3:
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const AllOrdersScreen(), // Page 4
+        ));
+        break;
     }
   }
 }
 
-class MenuItem extends StatelessWidget {
+class MenuItem extends ConsumerWidget {
   final String text;
   final IconData icon;
   final VoidCallback? onTap;
@@ -143,15 +166,20 @@ class MenuItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
 
     return ListTile(
-      leading: Icon(icon, color: appTheme.colorScheme.primary),
+      leading: Icon(icon,
+          color: themeMode == ThemeMode.dark
+              ? Colors.white
+              : appTheme.colorScheme.primary),
       title: Text(
         text,
         style: TextStyle(
-            color: isDarkMode ? Colors.grey : const Color(0xFF4F5252),
+            color: themeMode == ThemeMode.dark
+                ? Colors.grey
+                : const Color(0xFF4F5252),
             fontWeight: FontWeight.w500),
       ),
       onTap: onTap,

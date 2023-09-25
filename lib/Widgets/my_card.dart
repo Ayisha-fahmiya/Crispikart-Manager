@@ -5,12 +5,14 @@ class MyCard extends StatefulWidget {
   final IconData icon;
   final String title;
   final String contentText;
+  final Widget page;
 
   const MyCard({
     Key? key,
     required this.icon,
     required this.title,
     required this.contentText,
+    required this.page,
   }) : super(key: key);
 
   @override
@@ -25,8 +27,15 @@ class _MyCardState extends State<MyCard> {
       width: 160,
       child: Card(
         color: appTheme.colorScheme.primary,
-        child: InkWell(
-          onTap: () {},
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => widget.page,
+              ),
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
